@@ -1,7 +1,7 @@
 class SchedulesController < ApplicationController
 
 
-  before_fileter :set_user
+  before_filter :set_user
 
   # GET /schedules
   # GET /schedules.json
