@@ -1,7 +1,12 @@
 ScheduleMatcher::Application.routes.draw do
-  resources :schedules
-
-  resources :users
+  
+  scope "/admin" do
+      resources :users
+  end  
+  
+  scope "/:user_name" do
+    resources :schedules
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

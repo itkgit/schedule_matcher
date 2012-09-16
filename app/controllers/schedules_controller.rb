@@ -1,10 +1,14 @@
 class SchedulesController < ApplicationController
+
+
+  before_fileter :set_user
+
   # GET /schedules
   # GET /schedules.json
   def index
     @schedules = Schedule.all
     @users = User.all
-    
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @schedules }
@@ -80,5 +84,10 @@ class SchedulesController < ApplicationController
       format.html { redirect_to schedules_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def set_user
+        @user = User.find_by_name(params[:user_name])
   end
 end
