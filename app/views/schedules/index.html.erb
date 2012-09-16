@@ -1,3 +1,25 @@
+
+<script type="text/javascript">
+    $(function(){
+        $('.absent').click(
+            function(e){
+                e.preventDefault();
+                $.ajax({
+                    type: 'post',
+                    url: '/fox/schedule/absent',
+                    data: {
+                        'schedule_id': 'x'
+                    },
+                    success: function(data){
+                        alert(data);
+                    }
+                });
+            }
+        );
+    });
+</script>
+
+
 <h1>こんにちは <%= @user.name %></h1>
 
 <ul>
@@ -18,9 +40,14 @@
             end
           %>
         <dd>
-          <% unless schedules_of_user.empty? then %>
-            <% schedules_of_user.each do |schedule| %>
-              <%= schedule.start.to_s(:time) %> - <%= schedule.end.to_s(:time) %>
+          <% unless schedules_of_user.empty? then %><% schedules_of_user.each do |schedule| %> 
+              <form action="/<%= @user.name %>/schedule/new" method="post" >
+                <input type="text" value="<%= schedule.start.to_s(:time) %> ">
+                - 
+                <input type="text" value="<%= schedule.end.to_s(:time) %>">
+               </form> <button class="absent" >欠席</button>
+                
+              
             <% end %>
           <% else %>
             未
@@ -32,5 +59,6 @@
 </li>
 <% end %>
 </ul>
+<form id action="/" method="get" id="form_absent"/>
 
 <%= link_to 'New Schedule', new_schedule_path %>
