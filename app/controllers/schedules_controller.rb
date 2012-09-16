@@ -3,7 +3,8 @@ class SchedulesController < ApplicationController
   # GET /schedules.json
   def index
     @schedules = Schedule.all
-
+    @users = User.all
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @schedules }

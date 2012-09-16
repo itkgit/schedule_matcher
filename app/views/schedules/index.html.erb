@@ -1,29 +1,36 @@
 <h1>Listing schedules</h1>
 
-<table>
-  <tr>
-    <th>Start</th>
-    <th>End</th>
-    <th>Status</th>
-    <th>User</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @schedules.each do |schedule| %>
-  <tr>
-    <td><%= schedule.start %></td>
-    <td><%= schedule.end %></td>
-    <td><%= schedule.status %></td>
-    <td><%= schedule.user_id %></td>
-    <td><%= link_to 'Show', schedule %></td>
-    <td><%= link_to 'Edit', edit_schedule_path(schedule) %></td>
-    <td><%= link_to 'Destroy', schedule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+<ul>
+<% today = Date.today  %>
+<% (today .. today.advance(days: 5)).each do |day| %>
+<li>
+  <h1><%= day %></h1>
+  <ol>
+    <% @users.each do |user| %>
+      <dl>
+        <dt>
+          <%= user.name %>
+        </dt>
+          <% schedules_of_user = @schedules.select do |schedule|
+              schedule.start > day.beginning_of_day &&
+              schedule.end < day.end_of_day &&
+              schedule.user == user
+            end
+          %>
+        <dd>
+          <% unless schedules_of_user.empty? then %>
+            <% schedules_of_user.each do |schedule| %>
+              <%= schedule.start.to_s(:time) %> - <%= schedule.end.to_s(:time) %>
+            <% end %>
+          <% else %>
+            未
+          <% end %>
+        </dd>
+      </dl>
+    <% end %>
+  </ol>
+</li>
 <% end %>
-</table>
-
-<br />
+</ul>
 
 <%= link_to 'New Schedule', new_schedule_path %>
